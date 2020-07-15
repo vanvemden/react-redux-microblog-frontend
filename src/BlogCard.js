@@ -7,18 +7,21 @@ import {
   CardBody,
   CardTitle,
   CardSubtitle,
-  Button
+  Button,
+  Col
 } from 'reactstrap';
 
-function BlogCard({ post }) {
+function BlogCard({ id, post }) {
 
   return (
-    <Card className="BlogCard">
-      <CardBody>
-        <CardTitle><Link to={`/posts/${post.id}`}><h3>{post.title}</h3></Link></CardTitle>
-        <CardSubtitle>{post.description}</CardSubtitle>
-      </CardBody>
-    </Card>
+    <Col sm="6">
+      <Card className="BlogCard mb-3">
+        <CardBody>
+          <CardTitle><Link to={`/posts/${id}`}><h3>{post.title}</h3></Link></CardTitle>
+          <CardSubtitle>{post.description}</CardSubtitle>
+        </CardBody>
+      </Card>
+    </Col>
   )
 }
 

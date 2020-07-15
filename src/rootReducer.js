@@ -1,20 +1,31 @@
-import { ADD_POST, REMOVE_POST, ADD_COMMENT, REMOVE_COMMENT } from "./actionTypes";
+import { ADD_POST, REMOVE_POST, ADD_COMMENT, REMOVE_COMMENT, UPDATE_POST } from "./actionTypes";
 
-const INITIAL_STATE = { posts: [], comments: [] };
+const INITIAL_STATE = { posts: {}, comments: {} };
 
 function rootReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case ADD_POST:
-      return { ...state, posts: [...state.posts, action.payload] };
+      return { ...state, posts: { ...state.posts, ...action.payload } };
 
     case REMOVE_POST:
-      return { ...state, posts: state.posts.filter(post => post.id !== action.payload) };
+      const tempPosts = { ...state.posts };
+      delete tempPosts[action.payload];
+      return { ...state, posts: tempPosts };
+
+    case UPDATE_POST:
+      return { ...state, posts: { ...state.posts, ...action.payload } };
 
     case ADD_COMMENT:
-      return { ...state, comments: [...state.comments, action.payload] };
+      let postId = action.payload.postId;
+      let comment = action.payload.comment;
+      let tempArr = { ...state.comments };
+      tempArr[postId] ? tempArr[postId].push(comment) : tempArr[postId] = [comment];
+      return { ...state, comments: tempArr };
 
     case REMOVE_COMMENT:
-      return { ...state, comments: state.comments.filter(comment => comment.id !== action.payload) };
+      const tempComments = { ...state.comments };
+      delete tempComments[action.payload];
+      return { ...state, comments: tempComments };
 
     default:
       return state;

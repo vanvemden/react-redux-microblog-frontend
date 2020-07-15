@@ -6,6 +6,7 @@
   margin-right: 15px;
 }
 
-.BlogForm button {
+.BlogForm button,
+.BlogPost button {
   margin-right: 15px;
 }

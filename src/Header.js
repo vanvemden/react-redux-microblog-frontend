@@ -10,10 +10,10 @@ function Header() {
         Microblog
       </h1>
       <p>Get in the Rithm of blogging</p>
-      <Link exact to='/'>
+      <Link to='/'>
         Blog
       </Link>
-      <Link exact to='/new'>
+      <Link to='/new'>
         Add a new post
       </Link>
     </Jumbotron>

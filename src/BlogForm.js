@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom"
 import { useDispatch } from "react-redux";
-import { addPost } from "./actions";
+import { addPost, updatePost } from "./actions";
 import { Form, Label, Input, Button, FormGroup } from "reactstrap";
 import { v4 as uuidv4 } from 'uuid';
 
 const INITIAL_STATE = { title: "", description: "", body: "" }
 
-function BlogForm() {
-  const [formData, setFormData] = useState(INITIAL_STATE);
+function BlogForm({ post = false, id = false, setEdit }) {
+  const [formData, setFormData] = useState(post || INITIAL_STATE);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    dispatch(addPost({ ...formData, id: uuidv4() }));
+    if (id) {
+      dispatch(updatePost({ [id]: formData }));
+      setEdit(false);
+    } else {
+      let id = uuidv4()
+      dispatch(addPost({ [id]: formData }));
+    }
     setFormData(INITIAL_STATE);
-    history.push('/');
+    history.push(`/posts/${formData.id}`);
   }
 
   const handleChange = evt => {
