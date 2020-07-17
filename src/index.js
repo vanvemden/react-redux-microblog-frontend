@@ -6,15 +6,16 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom'
 
 import rootReducer from "./rootReducer";
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+  rootReducer, compose(applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  ));
 
 ReactDOM.render(
   <React.StrictMode>

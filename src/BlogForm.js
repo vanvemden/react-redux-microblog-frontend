@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom"
 import { useDispatch } from "react-redux";
-import { addPost, updatePost } from "./actions";
+import { savePostToApi, updatePostToApi } from "./actions";
 import { Form, Label, Input, Button, FormGroup } from "reactstrap";
-import { v4 as uuidv4 } from 'uuid';
 
 const INITIAL_STATE = { title: "", description: "", body: "" }
 
@@ -15,14 +14,14 @@ function BlogForm({ post = false, id = false, setEdit }) {
   const handleSubmit = evt => {
     evt.preventDefault();
     if (id) {
-      dispatch(updatePost({ [id]: formData }));
+      dispatch(updatePostToApi(formData));
       setEdit(false);
+      history.push(`/posts/${id}`);
     } else {
-      let id = uuidv4()
-      dispatch(addPost({ [id]: formData }));
+      dispatch(savePostToApi(formData));
+      history.push('/');
     }
     setFormData(INITIAL_STATE);
-    history.push(`/posts/${formData.id}`);
   }
 
   const handleChange = evt => {

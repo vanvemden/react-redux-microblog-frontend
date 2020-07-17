@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import BlogCard from "./BlogCard"
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
+import { loadPostsFromApi } from "./actions";
 import { Row, Col } from "reactstrap";
 
 function BlogList() {
-  const { posts } = useSelector((store) => store, shallowEqual);
+  const { titles } = useSelector((store) => store, shallowEqual);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadPostsFromApi())
+  }, [dispatch]);
+
   return (
     <div className="BlogList">
       <Row>
@@ -13,8 +20,8 @@ function BlogList() {
         </Col>
       </Row>
       <Row>
-        {Object.entries(posts).map(([key, post]) => (
-          <BlogCard post={post} id={key} key={key} />
+        {titles.map(post => (
+          <BlogCard post={post} key={post.id} />
         ))}
       </Row>
     </div>

@@ -11,13 +11,13 @@ import {
   Col
 } from 'reactstrap';
 
-function BlogCard({ id, post }) {
+function BlogCard({ post }) {
 
   return (
     <Col sm="6">
       <Card className="BlogCard mb-3">
         <CardBody>
-          <CardTitle><Link to={`/posts/${id}`}><h3>{post.title}</h3></Link></CardTitle>
+          <CardTitle><Link to={`/posts/${post.id}`}><h3>{post.title}</h3></Link></CardTitle>
           <CardSubtitle>{post.description}</CardSubtitle>
         </CardBody>
       </Card>

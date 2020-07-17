@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, FormGroup } from "reactstrap";
-import { addComment } from "./actions";
+import { sendCommentToApi } from "./actions";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from 'uuid';
 
 function CommentForm({ postId }) {
   const dispatch = useDispatch();
@@ -15,12 +14,12 @@ function CommentForm({ postId }) {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    let id = uuidv4();
-    dispatch(addComment(postId, { text, id }));
+    dispatch(sendCommentToApi(postId, text));
+    setText("")
   }
 
   return (
-    <div className="CommentForm">
+    <div className="CommentForm mt-4">
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Input placeholder="Add a new comment" type="text" name="text" id="text" value={text} onChange={handleChange} />
