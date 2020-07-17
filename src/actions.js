@@ -1,4 +1,14 @@
-import { LOAD_POSTS, LOAD_POST, EDIT_POST, ADD_POST, REMOVE_POST, ADD_COMMENT, REMOVE_COMMENT, UPDATE_POST } from "./actionTypes";
+import {
+  LOAD_POSTS,
+  LOAD_POST,
+  EDIT_POST,
+  ADD_POST,
+  REMOVE_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
+  UPDATE_POST,
+  UPDATE_VOTES
+} from "./actionTypes";
 import axios from "axios";
 
 export function loadPostsFromApi() {
@@ -32,7 +42,6 @@ function loadedPost(post) {
 export function savePostToApi(post) {
   return async function (dispatch) {
     let res = await axios.post("http://localhost:5000/api/posts/", { ...post });
-    console.log("res=", res);
     dispatch(savedPost(res.data));
   };
 }
@@ -50,7 +59,6 @@ export function updatePostToApi(post) {
     dispatch(updatedPost(res.data));
   };
 }
-
 
 export function updatedPost(post) {
   return {
@@ -100,3 +108,18 @@ export function removedComment(postId, commentId) {
     payload: { postId, commentId },
   };
 }
+
+export function sendVotesToApi(postId, direction) {
+  return async function (dispatch) {
+    let res = await axios.post(`http://localhost:5000/api/posts/${postId}/vote/${direction}`);
+    dispatch(sentVotes(postId, res.data.votes));
+  };
+}
+
+export function sentVotes(postId, numVotes) {
+  return {
+    type: UPDATE_VOTES,
+    payload: { postId, numVotes },
+  };
+}
+

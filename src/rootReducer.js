@@ -1,10 +1,18 @@
-import { LOAD_POSTS, LOAD_POST, ADD_POST, REMOVE_POST, ADD_COMMENT, REMOVE_COMMENT, UPDATE_POST } from "./actionTypes";
+import {
+  LOAD_POSTS,
+  LOAD_POST,
+  ADD_POST,
+  REMOVE_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
+  UPDATE_POST,
+  UPDATE_VOTES
+} from "./actionTypes";
 
 const INITIAL_STATE = { posts: {}, titles: [] };
 
 function rootReducer(state = INITIAL_STATE, action) {
   let postId;
-  let tempArr;
 
   switch (action.type) {
 
@@ -27,29 +35,28 @@ function rootReducer(state = INITIAL_STATE, action) {
       return { ...state, posts: tempPosts };
 
     case UPDATE_POST:
+      let comments = state.posts[action.payload.id].comments;
       return {
         ...state, posts: {
-          ...state.posts, [action.payload.id]: { ...action.payload }
+          ...state.posts, [action.payload.id]: { ...action.payload, comments: [...comments] }
         }
       };
 
     case ADD_COMMENT:
       postId = action.payload.postId;
-      let postObj = state.posts[postId];
       let commentsArr = state.posts[postId].comments;
       let newComment = action.payload.comment;
       return {
         ...state, posts: {
           ...state.posts, [postId]: {
-            ...postObj, comments: [...commentsArr, newComment]
+            ...state.posts[postId], comments: [...commentsArr, newComment]
           }
         }
       }
 
     case REMOVE_COMMENT:
-      let commentId = action.payload.commentId;
       postId = action.payload.postId;
-      // How can we only get the comments by postId and then overwrite
+      let commentId = action.payload.commentId;
       const tempComments = state.posts[postId].comments.filter(c => c.id !== commentId)
       return {
         ...state, posts: {
@@ -59,12 +66,34 @@ function rootReducer(state = INITIAL_STATE, action) {
         }
       }
 
+    case UPDATE_VOTES:
+      let numVotes = action.payload.numVotes;
+      postId = action.payload.postId;
+
+      // iterate over titles to update votes
+      let tempTitles = state.titles.map(title => {
+        if (title.id === postId) {
+          title.votes = numVotes;
+        }
+        return title;
+      });
+      // update titles and posts votes
+      return {
+        ...state, posts: {
+          ...state.posts, [postId]: {
+            ...state.posts[postId], votes: numVotes
+          }
+        },
+        titles: [...tempTitles]
+      }
+
     default:
       return state;
   }
 }
 
 export default rootReducer;
+
 
 
 

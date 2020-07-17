@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useParams, Redirect, useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
-import { removePostFromApi, loadPostFromApi } from "./actions";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { removePostFromApi, loadPostFromApi, sendVotesToApi } from "./actions";
 import BlogForm from "./BlogForm";
 import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
@@ -30,6 +32,10 @@ function BlogPost() {
     }
   }
 
+  const vote = (id, dir) => {
+    dispatch(sendVotesToApi(id, dir));
+  }
+
   return (
     <div className="BlogPost">
       {edit ?
@@ -37,6 +43,9 @@ function BlogPost() {
         :
         <div>
           <h1>{post.title}</h1>
+          <p>{post.votes} votes</p>
+          <Button color="success" className="mr-2" onClick={() => vote(postId, "up")}><FontAwesomeIcon icon={faThumbsUp} /></Button>
+          <Button color="danger" onClick={() => vote(postId, "down")}><FontAwesomeIcon icon={faThumbsDown} /></Button>
           <h5><i>{post.description}</i></h5>
           <p>{post.body}</p>
           <Button color="info" onClick={() => setEdit(true)}>Edit</Button>
@@ -48,4 +57,5 @@ function BlogPost() {
     </div>
   )
 }
+
 export default BlogPost;
