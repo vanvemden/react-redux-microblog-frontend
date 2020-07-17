@@ -12,7 +12,7 @@ import {
 const INITIAL_STATE = { posts: {}, titles: [] };
 
 function rootReducer(state = INITIAL_STATE, action) {
-  let postId;
+  let postId, tempPosts;
 
   switch (action.type) {
 
@@ -30,7 +30,7 @@ function rootReducer(state = INITIAL_STATE, action) {
       };
 
     case REMOVE_POST:
-      const tempPosts = { ...state.posts };
+      tempPosts = { ...state.posts };
       delete tempPosts[action.payload];
       return { ...state, posts: tempPosts };
 
@@ -72,19 +72,20 @@ function rootReducer(state = INITIAL_STATE, action) {
 
       // iterate over titles to update votes
       let tempTitles = state.titles.map(title => {
-        if (title.id === postId) {
-          title.votes = numVotes;
+        if (title.id === +postId) {
+          title = { ...title, votes: numVotes };
         }
         return title;
       });
+
+      tempPosts = { ...state.posts };
+      if (tempPosts[postId]) {
+        tempPosts[postId] = { ...tempPosts[postId], votes: numVotes };
+      }
       // update titles and posts votes
       return {
-        ...state, posts: {
-          ...state.posts, [postId]: {
-            ...state.posts[postId], votes: numVotes
-          }
-        },
-        titles: [...tempTitles]
+        ...state, posts: tempPosts,
+        titles: tempTitles
       }
 
     default:

@@ -20,7 +20,7 @@ function BlogList() {
         </Col>
       </Row>
       <Row>
-        {titles.map(post => (
+        {titles.sort((a, b) => b.votes - a.votes).map(post => (
           <BlogCard post={post} key={post.id} />
         ))}
       </Row>
