@@ -1,6 +1,5 @@
 ## Deploy Status
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9e400b37-6a27-4c00-bbc4-3c730d2a9858/deploy-status)](https://app.netlify.com/sites/microblog-frontend/deploys)
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
