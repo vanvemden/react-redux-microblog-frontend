@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { useParams, Redirect, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
@@ -22,10 +22,6 @@ function BlogPost() {
     }
   }, [post, postId, dispatch]);
 
-  if (!post) {
-    return <Redirect to="/" />;
-  }
-
   const handleDelete = (id) => {
     // prompt user for confirmation
     if (window.confirm("Are you sure you want to delete?")) {
@@ -38,6 +34,7 @@ function BlogPost() {
     dispatch(sendVotesToApi(id, dir));
   };
 
+  if (!post) return "Loading";
   return (
     <div className="BlogPost">
       {edit ? (
