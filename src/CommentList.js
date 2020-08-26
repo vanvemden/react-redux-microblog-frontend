@@ -1,7 +1,6 @@
 import React from "react";
 
 import CommentCard from "./CommentCard";
-import { useSelector, shallowEqual } from "react-redux";
 import { Row, Container } from "reactstrap";
 
 function CommentList({ postId, comments }) {
@@ -10,41 +9,19 @@ function CommentList({ postId, comments }) {
   return (
     <div className="CommentList mt-4">
       <h5>Comments</h5>
-      {comments ?
+      {comments ? (
         <Container>
-          {comments.map(comment => (
+          {comments.map((comment) => (
             <Row className="my-2">
               <CommentCard comment={comment} key={comment.id} postId={postId} />
             </Row>
           ))}
         </Container>
-        :
+      ) : (
         <p>No comments yet :(</p>
-      }
+      )}
     </div>
   );
 }
 
 export default CommentList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
